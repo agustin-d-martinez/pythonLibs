@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "electro"
+version = "0.2.0"
+description = "Python library for electronics, DSP and circuit analysis."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+authors = [
+    { name = "Agustin Martinez" }
+]
+
+dependencies = [
+    "numpy>=2.0",
+    "scipy>=1.15",
+    "sympy>=1.13",
+    "matplotlib>=3.10",
+    "ipython>=9.0",
+]
+
+keywords = [
+    "electronics",
+    "dsp",
+    "circuits",
+    "signal-processing",
+    "communications",
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools]
+package-dir = {"" = "libs"}
+
+[tool.setuptools.packages.find]
+where = ["libs"]
+include = ["electro*"]

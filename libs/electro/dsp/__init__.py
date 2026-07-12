@@ -27,7 +27,6 @@ from .spectral import (
     fft,
     fft_shift,
     fft_freq,
-    positive_spectrum,
     WindowType,
 )
 
@@ -67,7 +66,6 @@ __all__ = [
     "fft",
     "fft_shift",
     "fft_freq",
-    "positive_spectrum",
     "WindowType",
 	
     # Windows

@@ -77,7 +77,7 @@ def recursive_moving_average(xx : ArrayLike ,
         y[n] = y_old + (xx[n] - x_n_N)/window_lenght             # Funcion de diferencia recursiva para promedio movil
     return y
 
-def lyons_lowpass(xx : ArrayLike, N : int, C : int = 2, L : int = 1) -> np.ndarray:
+def lyons_lowpass(xx : ArrayLike, N : int, C : int = 2, interpolation : int = 1) -> np.ndarray:
     """
     Apply a recursive Lyons low-pass filter.
 
@@ -91,7 +91,7 @@ def lyons_lowpass(xx : ArrayLike, N : int, C : int = 2, L : int = 1) -> np.ndarr
         Order of the filter.
     C : int, default=2
         Number of cascaded stages.
-    L : int, default=1
+    interpolation : int, default=1
         Interpolation factor.
 
     Returns
@@ -105,7 +105,7 @@ def lyons_lowpass(xx : ArrayLike, N : int, C : int = 2, L : int = 1) -> np.ndarr
 
         H(z) = (z^(-M) (1/N) (1-z^-N)/(1-z^-1))^C
     """
-    if L == 0:
+    if interpolation == 0:
         raise ValueError("L must be greater than 0.")
     
     # Check imputs
@@ -114,7 +114,7 @@ def lyons_lowpass(xx : ArrayLike, N : int, C : int = 2, L : int = 1) -> np.ndarr
     # Apply the recursive moving average filter C times. 
     tr = xx.copy()
     for _ in range(C):
-        tr = recursive_moving_average(tr, N, L)
+        tr = recursive_moving_average(tr, N, interpolation)
 
     return tr
 

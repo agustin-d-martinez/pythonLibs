@@ -56,11 +56,11 @@ def fft(xx : ArrayLike,
     xx_f = np.fft.fft(xx, n=nfft)/N
     
     if only_positive:
-        xx_f = positive_spectrum(xx_f)
+        xx_f = _positive_spectrum(xx_f)
 
     return np.moveaxis(xx_f, -1, axis)
 
-def positive_spectrum(xx: ArrayLike, axis : int = -1 ) -> np.ndarray:
+def _positive_spectrum(xx: ArrayLike, axis : int = -1 ) -> np.ndarray:
     """
     Extract the positive frequency spectrum from an FFT result.
 
@@ -84,7 +84,11 @@ def positive_spectrum(xx: ArrayLike, axis : int = -1 ) -> np.ndarray:
 
     return xx[tuple(sl)]
 
-def fft_freq(xx : ArrayLike | int, fs: float, axis : int = -1 ) -> np.ndarray:
+def fft_freq(xx : ArrayLike | int, 
+             fs: float = 1, 
+             axis : int = -1,
+             only_positive=False
+             ) -> np.ndarray:
     """
     Generate the frequency axis associated with an FFT.
 
@@ -100,6 +104,8 @@ def fft_freq(xx : ArrayLike | int, fs: float, axis : int = -1 ) -> np.ndarray:
         Sampling frequency.
     axis : int, default=-1
         Axis along which the FFT is computed.
+    only_positive : bool, default=False
+        If True, return only the positive frequency spectrum.
 
     Returns
     -------
@@ -111,12 +117,15 @@ def fft_freq(xx : ArrayLike | int, fs: float, axis : int = -1 ) -> np.ndarray:
     else:
         xx = np.asarray(xx)
         N = xx.shape[axis]
-    
-    ff = np.zeros(N)
+
+    if only_positive:
+        return np.arange(N//2 + 1)* fs/N
+
     half = (N - 1) // 2
     p1 = np.arange(0, half + 1)
     p2 = np.arange(-(N//2), 0)
 
+    ff = np.zeros(N)
     ff[:half+1] = p1
     ff[half+1:] = p2
     return ff * fs/N

@@ -189,7 +189,7 @@ def laplace(H_t: Expr) -> Expr:
     Returns:
         Expresión en el el dominio de laplace (s) de la función.
     """
-    return _laplace_transform(H_t , t , s)
+    return _laplace_transform(H_t , t , s)[0]
 
 def ilaplace(H_s : Expr) -> Expr:               #Cuidado con funciones muy complejas acá
     """

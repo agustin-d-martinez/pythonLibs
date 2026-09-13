@@ -5,9 +5,11 @@ __credits__ = 'None'
 from . import dsp
 from . import circuits
 from . import graphics
+from . import utils
 
 __all__ = [
     "dsp",
     "circuits",
     "graphics",
+	"utils"
 ]

@@ -94,6 +94,38 @@ def power_db(xx: ArrayLike) -> np.ndarray:
     """
     return 10*np.log10(np.abs(xx))
 
+def get_power(vv_fft : ArrayLike, ii_fft : ArrayLike):
+    res = {}
+
+    fases_v = np.angle(vv_fft)
+    fases_i = np.angle(ii_fft)
+    V_harm_rms = np.abs(vv_fft) / np.sqrt(2)
+    I_harm_rms = np.abs(ii_fft) / np.sqrt(2)
+    V_harm_rms[0] *= np.sqrt(2) 
+    I_harm_rms[0] *= np.sqrt(2)
+
+    V_rms_total = np.sqrt(np.sum(V_harm_rms**2))
+    I_rms_total = np.sqrt(np.sum(I_harm_rms**2))
+
+    
+    res['S'] = V_rms_total * I_rms_total
+    res['P'] = np.sum(V_harm_rms * I_harm_rms * np.cos(fases_v - fases_i))
+    res['Q'] = np.sum(V_harm_rms * I_harm_rms * np.sin(fases_v - fases_i))
+    D_square = res['S']**2 - res['P']**2 - res['Q']**2
+    res['D'] = np.sqrt(max(D_square, 0))
+    
+    idx_fo = np.argmax(V_harm_rms[1:]) + 1
+
+    irms_0 = I_harm_rms[0]
+    irms_1 = I_harm_rms[idx_fo]
+    vrms_0 = V_harm_rms[0]
+    vrms_1 = V_harm_rms[idx_fo]
+
+    res['THD_V'] = np.sqrt(I_rms_total**2 - irms_0**2 - irms_1**2) / irms_1 if irms_1 != 0 else 1
+    res['THD_I'] = np.sqrt(V_rms_total**2 - vrms_0**2 - vrms_1**2) / vrms_1 if vrms_1 != 0 else 1
+
+    return res
+
 def quantizer(xx: ArrayLike, Vfs: float, bits: int = 4) -> np.ndarray:
     """
     Quantize a signal using a uniform ADC model.

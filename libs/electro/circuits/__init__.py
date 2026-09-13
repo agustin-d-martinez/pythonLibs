@@ -20,19 +20,8 @@ from .symbolic import (
     
     print_latex,
 )
-from .utils import (
-    parallel,
 
-    power,
-    rms,
-
-    power_db,
-    voltage_db,
-    snr, 
-
-    quantizer,
-)
-
+from . import parameters
 
 __all__ = [
     "s", "t", "z", "n",
@@ -54,11 +43,5 @@ __all__ = [
 
     "print_latex",
     
-    "parallel",
-    "power",
-    "rms",
-    "power_db",
-    "voltage_db",
-    "snr", 
-    "quantizer",
+    "parameters"
     ]
